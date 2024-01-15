@@ -3,7 +3,7 @@
     export let data: card;
 </script>
 
-<article class="p-6 border-black border-[1.8px] rounded-md grid gap-x-5 items-center grid-cols-2 transition cursor-pointer hover:scale-105">
+<article class="p-6 border-black border-[1.8px] rounded-md grid gap-x-5 items-center grid-cols-2 transition cursor-pointer hover:scale-105 bg-gray-900 h-[280px]">
     <img src={data.flagURL} alt={data.flagAlt}>
     <section>
         <h2 class="text-2xl">{data.name}</h2>

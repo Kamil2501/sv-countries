@@ -5,6 +5,7 @@
     export let data: PageData;
     
     let countries = data.countries;
+    let continent = 'All'
 
     const processData = (country: any) => {
         const cardData: card = {
@@ -20,7 +21,12 @@
     }
 
     const filterCountries = (ev: Event) => {
-      countries = data.countries.filter((x: any) => x.name.common.toLowerCase().includes((ev.target as HTMLInputElement).value.toLowerCase()))  
+      countries = data.countries.filter((x: any) => x.name.common.toLowerCase().includes((ev.target as HTMLInputElement).value.toLowerCase()) && (continent === 'All' || x.continents.includes(continent)))  
+    }
+
+    const filterContinents = (ev: Event) => {
+        continent = (ev.target as HTMLSelectElement)!.value;
+        countries = data.countries.filter((x: card) => x.continents.includes(continent) || continent === 'All')
     }
 </script>
 
@@ -28,12 +34,23 @@
     <h1 class="text-4xl">Countries</h1>
     <div>
         <label for="search-country">Search country</label>
-        <input on:input={filterCountries} type="text" class="w-full p-1 rounded-md bg-gray-300" id="search country">
+        <input on:input={filterCountries} type="text" class="w-full p-1 rounded-md bg-gray-200 text-black" id="search country">
+    </div>
+    <div>
+        <label for="continent">Continent</label>
+        <select id="continent" on:change={filterContinents} bind:value={continent} class="text-black">
+            <option value="All">All</option>
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="Africa">Africa</option>
+            <option value="North America">North America</option>
+            <option value="South America">South America</option>
+        </select>
     </div>
 </div>
-<div class="mx-5 mb-10 grid justify-center gap-5 grid-cols-[repeat(auto-fit,430px)]">
+<div class="mx-5 pb-10 grid justify-center gap-5 grid-cols-[repeat(auto-fit,430px)]">
     {#each countries as country}
        {@const cardData = processData(country) }
-       <CountryCard data={cardData} />
+       <a href={`/${cardData.name}`}><CountryCard data={cardData} /></a>
     {/each}
 </div>
